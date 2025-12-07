@@ -2,7 +2,7 @@
 #include "game.h"
 class Object
 {
-private:
+protected:
     /* data */
     Game &_game = Game::GetInstance();
 

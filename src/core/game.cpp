@@ -1,5 +1,6 @@
 #include "game.h"
 #include "../screne_main.h"
+#include "actor.h"
 void Game::run()
 {
     while (_is_runing)
@@ -56,7 +57,9 @@ void Game::init(const std::string &title, int width, int height)
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Window or Renderer create failed: %s", SDL_GetError());
         SDL_SetRenderLogicalPresentation(_renderer, width, height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
     }
-
+    // 创建资源管理器
+    _asset_store = new AssetStore(_renderer, _mixer);
+    // 创建场景
     _current_screne = new ScreneMain();
     _current_screne->init();
 }
@@ -96,12 +99,46 @@ void Game::clean()
         delete _current_screne;
     }
 
+    if (_asset_store)
+    {
+        _asset_store->clean();
+        delete _asset_store;
+    }
+
     SDL_DestroyRenderer(_renderer);
     SDL_DestroyWindow(_window);
     MIX_DestroyMixer(_mixer);
     MIX_Quit();
     TTF_Quit();
     SDL_Quit();
+}
+void Game::drawGrid(const glm::vec2 &top_left, const glm::vec2 &bottom_right, float grid_width, SDL_FColor fcolor)
+{
+    SDL_SetRenderDrawColorFloat(_renderer, fcolor.r, fcolor.g, fcolor.b, fcolor.a);
+    for (float x = top_left.x; x <= bottom_right.x; x += grid_width)
+    {
+        SDL_RenderLine(_renderer, x, top_left.y, x, bottom_right.y);
+    }
+    for (float y = top_left.y; y <= bottom_right.y; y += grid_width)
+    {
+        SDL_RenderLine(_renderer, top_left.x, y, bottom_right.x, y);
+    }
+    SDL_SetRenderDrawColorFloat(_renderer, 0, 0, 0, 1);
+}
+void Game::drawBoundary(const glm::vec2 &top_left, const glm::vec2 &right_bottom, float boundary_width, SDL_FColor fcolor)
+{
+    SDL_SetRenderDrawColorFloat(_renderer, fcolor.r, fcolor.g, fcolor.b, fcolor.a);
+    for (float i = 0; i < boundary_width; i++)
+    {
+        SDL_FRect rect = {
+            top_left.x - i,
+            top_left.y - i,
+            right_bottom.x - top_left.x + 2 * i,
+            right_bottom.y - top_left.y + 2 * i,
+        };
+        SDL_RenderRect(_renderer, &rect);
+    }
+    SDL_SetRenderDrawColorFloat(_renderer, 0, 0, 0, 1);
 }
 Game::Game()
 {

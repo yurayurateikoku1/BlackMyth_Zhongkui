@@ -33,13 +33,14 @@ if(WIN32)
 endif()
 set(TARGET ${PROJECT_NAME}-${CMAKE_SYSTEM_NAME})
 
-add_executable(${TARGET}
-    src/main.cpp
-    src/core/object.h
-    src/core/screne.h
-    src/screne_main.h src/screne_main.cpp
-    src/core/game.h      src/core/game.cpp
+file(GLOB_RECURSE SOURCES
+    src/*.cpp
+    src/**/*.cpp
+    src/*.h
+    src/**/*.h
 )
+
+add_executable(${TARGET} ${SOURCES})
 
 target_link_libraries(${TARGET}
     ${SDL3_LIBRARIES}

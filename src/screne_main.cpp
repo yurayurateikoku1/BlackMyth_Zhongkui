@@ -1,11 +1,17 @@
 #include "screne_main.h"
-
+#include "player.h"
 void ScreneMain::init()
 {
+    _word_size = _game.getScreenSize() * 3.0f;
+    _camera_position = _word_size / 2.0f - _game.getScreenSize() / 2.0f;
+    _player = new Player();
+    _player->init();
+    _player->setPosition(_word_size / 2.0f);
 }
 
 void ScreneMain::update(float dt)
 {
+    _player->update(dt);
 }
 
 void ScreneMain::handleEvents(SDL_Event &event)
@@ -14,8 +20,20 @@ void ScreneMain::handleEvents(SDL_Event &event)
 
 void ScreneMain::render()
 {
+    renderBackground();
+    _player->render();
 }
 
 void ScreneMain::clean()
 {
+    _player->clean();
+    delete _player;
+}
+
+void ScreneMain::renderBackground()
+{
+    auto start = -_camera_position;
+    auto end = _word_size - _camera_position;
+    _game.drawGrid(start, end, 80, SDL_FColor(0.5, 0.5, 0.5, 1));
+    _game.drawBoundary(start, end, 5.0f, SDL_FColor(1, 1, 1, 1));
 }
