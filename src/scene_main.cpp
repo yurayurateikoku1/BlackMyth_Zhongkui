@@ -1,36 +1,37 @@
-#include "screne_main.h"
+#include "scene_main.h"
 #include "player.h"
-void ScreneMain::init()
+void SceneMain::init()
 {
     _word_size = _game.getScreenSize() * 3.0f;
     _camera_position = _word_size / 2.0f - _game.getScreenSize() / 2.0f;
     _player = new Player();
     _player->init();
     _player->setPosition(_word_size / 2.0f);
+    addChild(_player);
 }
 
-void ScreneMain::update(float dt)
+void SceneMain::update(float dt)
 {
-    _player->update(dt);
+    Scene::update(dt);
 }
 
-void ScreneMain::handleEvents(SDL_Event &event)
+void SceneMain::handleEvents(SDL_Event &event)
 {
+    Scene::handleEvents(event);
 }
 
-void ScreneMain::render()
+void SceneMain::render()
 {
+    Scene::render();
     renderBackground();
-    _player->render();
 }
 
-void ScreneMain::clean()
+void SceneMain::clean()
 {
-    _player->clean();
-    delete _player;
+    Scene::clean();
 }
 
-void ScreneMain::renderBackground()
+void SceneMain::renderBackground()
 {
     auto start = -_camera_position;
     auto end = _word_size - _camera_position;

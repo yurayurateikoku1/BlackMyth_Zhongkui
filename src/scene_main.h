@@ -1,7 +1,7 @@
 #pragma once
-#include "core/screne.h"
+#include "core/scene.h"
 class Player;
-class ScreneMain : public Screne
+class SceneMain : public Scene
 {
 private:
     /* data */
@@ -10,8 +10,8 @@ private:
     Player *_player = nullptr;
 
 public:
-    ScreneMain(/* args */) = default;
-    ~ScreneMain() = default;
+    SceneMain(/* args */) = default;
+    ~SceneMain() = default;
     virtual void init() override;
     virtual void handleEvents(SDL_Event &event) override;
     virtual void update(float dt) override;

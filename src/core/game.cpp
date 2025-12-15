@@ -1,5 +1,5 @@
 #include "game.h"
-#include "../screne_main.h"
+#include "../scene_main.h"
 #include "actor.h"
 void Game::run()
 {
@@ -60,7 +60,7 @@ void Game::init(const std::string &title, int width, int height)
     // 创建资源管理器
     _asset_store = new AssetStore(_renderer, _mixer);
     // 创建场景
-    _current_screne = new ScreneMain();
+    _current_screne = new SceneMain();
     _current_screne->init();
 }
 void Game::handleEnvents()

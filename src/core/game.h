@@ -7,7 +7,7 @@
 #include <SDL3/SDL_properties.h>
 #include <glm/glm.hpp>
 #include "asset_store.h"
-class Screne;
+class Scene;
 class Game
 {
 public:
@@ -30,7 +30,7 @@ public:
     // 画边框
     void drawBoundary(const glm::vec2 &top_left, const glm::vec2 &right_bottom, float boundary_width, SDL_FColor fcolor);
 
-    Screne *getCurrentScrene() const { return _current_screne; }
+    Scene *getCurrentScene() const { return _current_screne; }
     AssetStore *getAssetStore() const { return _asset_store; }
 
 private:
@@ -38,7 +38,7 @@ private:
     Game(const Game &) = delete;
     Game &operator=(const Game &) = delete;
     AssetStore *_asset_store = nullptr; // 资源管理类指针
-    Screne *_current_screne = nullptr;  // 当前场景类指针
+    Scene *_current_screne = nullptr;   // 当前场景类指针
     bool _is_runing = true;
     Uint64 _FPS = 60;
     Uint64 _framDelay = 1000000000 / _FPS; // 帧延迟,ns
