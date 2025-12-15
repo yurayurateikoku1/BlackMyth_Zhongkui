@@ -22,8 +22,8 @@ void SceneMain::handleEvents(SDL_Event &event)
 
 void SceneMain::render()
 {
-    Scene::render();
     renderBackground();
+    Scene::render();
 }
 
 void SceneMain::clean()

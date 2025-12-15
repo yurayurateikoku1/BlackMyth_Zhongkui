@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #include "asset_store.h"
 class Scene;
+struct Texture;
 class Game
 {
 public:
@@ -32,6 +33,9 @@ public:
 
     Scene *getCurrentScene() const { return _current_screne; }
     AssetStore *getAssetStore() const { return _asset_store; }
+
+    // 渲染纹理
+    void renderTexture(const Texture &texture, const glm::vec2 &position, const glm::vec2 &size);
 
 private:
     Game();
