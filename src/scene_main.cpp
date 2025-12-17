@@ -1,5 +1,6 @@
 #include "scene_main.h"
 #include "player.h"
+#include "enemy.h"
 void SceneMain::init()
 {
     _word_size = _game.getScreenSize() * 3.0f;
@@ -8,6 +9,12 @@ void SceneMain::init()
     _player->init();
     _player->setPosition(_word_size / 2.0f);
     addChild(_player);
+
+    auto enemy = new Enemy();
+    enemy->init();
+    enemy->setTarget(_player);
+    enemy->setPosition(_word_size / 2.0f + glm::vec2(200.0f));
+    addChild(enemy);
 }
 
 void SceneMain::update(float dt)

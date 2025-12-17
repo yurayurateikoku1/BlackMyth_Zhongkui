@@ -1,11 +1,16 @@
 #include "player.h"
 #include "core/scene.h"
 #include "affiliate/sprite_anim.h"
+#include "affiliate/collider.h"
 void Player::init()
 {
     Actor::init();
     _max_speed = 500.0f;
-    SpriteAnim::addSpriteAnimChild(this, "assets/sprite/ghost-idle.png", 2.0f);
+    _sprite_idle = SpriteAnim::addSpriteAnimChild(this, "assets/sprite/ZhongKui-idle.png", 0.1f);
+    _sprite_move = SpriteAnim::addSpriteAnimChild(this, "assets/sprite/ZhongKui-move.png", 0.1f);
+    _sprite_move->setActive(false);
+
+    _collider = Collider::addColliderChild(this, _sprite_idle->getSize());
 }
 
 void Player::handleEvents(SDL_Event &event)
@@ -19,6 +24,7 @@ void Player::update(float dt)
     keyboradControl();
     move(dt);
     _velocity *= 0.9f;
+    checkState();
     syncCamera();
 }
 
@@ -57,13 +63,46 @@ void Player::keyboradControl()
     }
 }
 
-void Player::move(float dt)
-{
-    setPosition(_position + _velocity * dt);
-    _position = glm::clamp(_position, glm::vec2(0, 0), _game.getCurrentScene()->getWorldSize());
-}
-
 void Player::syncCamera()
 {
     _game.getCurrentScene()->setCameraPosition(_position - _game.getScreenSize() / 2.0f);
+}
+
+void Player::checkState()
+{
+
+    if (_velocity.x < 0)
+    {
+        _sprite_idle->setFlip(true);
+        _sprite_move->setFlip(true);
+    }
+    else if (_velocity.x > 0)
+    {
+        _sprite_idle->setFlip(false);
+        _sprite_move->setFlip(false);
+    }
+    bool new_is_moving = glm::length(_velocity) > 0.1f;
+    if (new_is_moving != _is_moving)
+    {
+        _is_moving = new_is_moving;
+        changeState(_is_moving);
+    }
+}
+
+void Player::changeState(bool is_moving)
+{
+    if (is_moving)
+    {
+        _sprite_idle->setActive(false);
+        _sprite_move->setActive(true);
+        _sprite_move->setCurrentFrame(_sprite_idle->getCurrentFrame());
+        _sprite_move->setFrameTime(_sprite_idle->getFrameTime());
+    }
+    else
+    {
+        _sprite_idle->setActive(true);
+        _sprite_move->setActive(false);
+        _sprite_idle->setCurrentFrame(_sprite_move->getCurrentFrame());
+        _sprite_idle->setFrameTime(_sprite_move->getFrameTime());
+    }
 }

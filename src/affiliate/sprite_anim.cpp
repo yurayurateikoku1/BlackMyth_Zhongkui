@@ -4,7 +4,7 @@ SpriteAnim *SpriteAnim::addSpriteAnimChild(ObjectScreen *parrent, const std::str
 {
     auto sprite_anim = new SpriteAnim();
     sprite_anim->init();
-    sprite_anim->setTexture(Texture("assets/sprite/ghost-idle.png"));
+    sprite_anim->setTexture(Texture(file_path));
     sprite_anim->setScale(2.0f);
     sprite_anim->setParrent(parrent);
     parrent->addChild(sprite_anim);
@@ -13,6 +13,8 @@ SpriteAnim *SpriteAnim::addSpriteAnimChild(ObjectScreen *parrent, const std::str
 
 void SpriteAnim::update(float dt)
 {
+    if (_is_finished)
+        return;
     _frame_time += dt;
     if (_frame_time >= 1.0f / _fps)
     {
@@ -20,6 +22,10 @@ void SpriteAnim::update(float dt)
         if (_current_frame >= _total_frames)
         {
             _current_frame = 0;
+            if (!_is_loop)
+            {
+                _is_finished = true;
+            }
         }
         _frame_time = 0.0f;
     }

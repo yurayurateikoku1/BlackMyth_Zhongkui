@@ -19,9 +19,7 @@ Sprite *Sprite::addSpriteChild(ObjectScreen *parrent, const std::string &file_pa
 
 void Sprite::render()
 {
-    if (_texture.texture == nullptr)
-        return;
-    if (_parrent == nullptr)
+    if (!_texture.texture || !_parrent || _is_finished)
         return;
     auto pos = _parrent->getRenderPosition() + _offset;
     Game::GetInstance().renderTexture(_texture, pos, _size);
