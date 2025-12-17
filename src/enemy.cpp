@@ -1,6 +1,7 @@
 #include "enemy.h"
 #include "affiliate/sprite_anim.h"
 #include "core/scene.h"
+#include "raw/states.h"
 void Enemy::init()
 {
     Actor::init();
@@ -14,6 +15,7 @@ void Enemy::init()
     _anim_current = _anim_normal;
 
     _collider = Collider::addColliderChild(this, _anim_current->getSize());
+    _states = States::addStatesChild(this);
 }
 
 void Enemy::update(float dt)
@@ -70,6 +72,9 @@ void Enemy::attack()
         return;
     if (_collider->isColliding(_target->getCollider()))
     {
-        SDL_Log("Circle vs Circle");
+        if (_states && _target->getStates())
+        {
+            _target->takeDamage(_states->getDamage());
+        }
     }
 }

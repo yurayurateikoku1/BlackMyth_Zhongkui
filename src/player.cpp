@@ -2,6 +2,7 @@
 #include "core/scene.h"
 #include "affiliate/sprite_anim.h"
 #include "affiliate/collider.h"
+#include "raw/states.h"
 void Player::init()
 {
     Actor::init();
@@ -11,6 +12,7 @@ void Player::init()
     _sprite_move->setActive(false);
 
     _collider = Collider::addColliderChild(this, _sprite_idle->getSize());
+    _states = States::addStatesChild(this);
 }
 
 void Player::handleEvents(SDL_Event &event)
@@ -26,6 +28,7 @@ void Player::update(float dt)
     _velocity *= 0.9f;
     checkState();
     syncCamera();
+    // IsAlive();
 }
 
 void Player::render()
