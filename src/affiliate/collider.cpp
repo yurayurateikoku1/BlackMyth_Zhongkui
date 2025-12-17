@@ -1,11 +1,22 @@
 #include "collider.h"
 
-Collider *Collider::addColliderChild(ObjectScreen *parent, glm::vec2 size, ColliderType type)
+void Collider::render()
+{
+#ifdef DEBUG_MODE
+    ObjectAffiliate::render();
+    auto pos = _parrent->getRenderPosition() + _offset;
+    _game.renderFillCircle(pos, _size, 0.3f);
+#endif
+}
+
+Collider *Collider::addColliderChild(ObjectScreen *parent, glm::vec2 size, ColliderType type, AnchorType anchor)
 {
     auto collider = new Collider();
     collider->init();
     collider->setParrent(parent);
     collider->setSize(size);
+    collider->setType(type);
+    collider->setOffsetByAnchor(anchor);
     parent->addChild(collider);
     return collider;
 }

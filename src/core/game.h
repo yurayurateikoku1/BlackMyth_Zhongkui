@@ -36,6 +36,8 @@ public:
 
     // 渲染纹理
     void renderTexture(const Texture &texture, const glm::vec2 &position, const glm::vec2 &size);
+    // 画圆
+    void renderFillCircle(const glm::vec2 &position, const glm::vec2 &size, float alpha);
 
 private:
     Game();

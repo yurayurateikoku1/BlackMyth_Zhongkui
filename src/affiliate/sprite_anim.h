@@ -12,7 +12,7 @@ private:
     bool _is_loop = true;
 
 public:
-    static SpriteAnim *addSpriteAnimChild(ObjectScreen *parrent, const std::string &file_path, float scale = 1.0f);
+    static SpriteAnim *addSpriteAnimChild(ObjectScreen *parrent, const std::string &file_path, float scale = 1.0f, AnchorType anchor = AnchorType::CENTER);
 
     virtual void update(float dt) override;
     virtual void setTexture(const Texture &texture) override;

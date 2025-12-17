@@ -13,7 +13,8 @@ protected:
     ColliderType _type = ColliderType::Circle;
 
 public:
-    static Collider *addColliderChild(ObjectScreen *parent, glm::vec2 size, ColliderType type = ColliderType::Circle);
+    virtual void render() override;
+    static Collider *addColliderChild(ObjectScreen *parent, glm::vec2 size, ColliderType type = ColliderType::Circle, AnchorType anchor = AnchorType::CENTER);
     bool isColliding(Collider *other);
     ColliderType getType() const { return _type; };
     void setType(ColliderType type) { _type = type; };

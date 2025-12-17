@@ -1,11 +1,12 @@
 #include "sprite_anim.h"
 
-SpriteAnim *SpriteAnim::addSpriteAnimChild(ObjectScreen *parrent, const std::string &file_path, float scale)
+SpriteAnim *SpriteAnim::addSpriteAnimChild(ObjectScreen *parrent, const std::string &file_path, float scale, AnchorType anchor)
 {
     auto sprite_anim = new SpriteAnim();
     sprite_anim->init();
     sprite_anim->setTexture(Texture(file_path));
-    sprite_anim->setScale(2.0f);
+    sprite_anim->setScale(scale);
+    sprite_anim->setOffsetByAnchor(anchor);
     sprite_anim->setParrent(parrent);
     parrent->addChild(sprite_anim);
     return sprite_anim;

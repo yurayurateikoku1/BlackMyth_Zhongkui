@@ -20,7 +20,7 @@ protected:
     bool _is_finished = false;
 
 public:
-    static Sprite *addSpriteChild(ObjectScreen *parrent, const std::string &file_path, float scale = 1.0f);
+    static Sprite *addSpriteChild(ObjectScreen *parrent, const std::string &file_path, float scale = 1.0f, AnchorType anchor = AnchorType::CENTER);
     virtual void render() override;
     Sprite() = default;
     Sprite(const std::string &file_path);
@@ -28,7 +28,6 @@ public:
     Texture getTexture() const { return _texture; }
     virtual void setTexture(const Texture &texture);
 
-    void setScale(float scale) { _size *= scale; }
     void setAngle(float angle) { _texture.angle = angle; }
     void setFlip(bool flip) { _texture.is_flip = flip; }
     bool getFlip() const { return _texture.is_flip; }

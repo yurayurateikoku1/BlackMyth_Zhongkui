@@ -6,15 +6,16 @@ Texture::Texture(const std::string &path)
     SDL_GetTextureSize(texture, &src_rect.w, &src_rect.h);
 }
 
-Sprite *Sprite::addSpriteChild(ObjectScreen *parrent, const std::string &file_path, float scale)
+Sprite *Sprite::addSpriteChild(ObjectScreen *parrent, const std::string &file_path, float scale, AnchorType anchor)
 {
     auto sprite = new Sprite();
     sprite->init();
     sprite->setTexture(file_path);
     sprite->setScale(scale);
+    sprite->setOffsetByAnchor(anchor);
     sprite->setParrent(parrent);
     parrent->addChild(sprite);
-    return nullptr;
+    return sprite;
 }
 
 void Sprite::render()

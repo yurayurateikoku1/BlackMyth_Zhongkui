@@ -6,8 +6,8 @@ void Player::init()
 {
     Actor::init();
     _max_speed = 500.0f;
-    _sprite_idle = SpriteAnim::addSpriteAnimChild(this, "assets/sprite/ZhongKui-idle.png", 0.1f);
-    _sprite_move = SpriteAnim::addSpriteAnimChild(this, "assets/sprite/ZhongKui-move.png", 0.1f);
+    _sprite_idle = SpriteAnim::addSpriteAnimChild(this, "assets/sprite/ZhongKui-idle.png", 1.0f);
+    _sprite_move = SpriteAnim::addSpriteAnimChild(this, "assets/sprite/ZhongKui-move.png", 1.0f);
     _sprite_move->setActive(false);
 
     _collider = Collider::addColliderChild(this, _sprite_idle->getSize());
