@@ -21,6 +21,8 @@ void Enemy::init()
 void Enemy::update(float dt)
 {
     Actor::update(dt);
+    if (!_target || !_target->getActive()) // 先判空再判活跃
+        return;
     aimTarget(_target);
     move(dt);
     attack();
@@ -68,7 +70,7 @@ void Enemy::remove()
 
 void Enemy::attack()
 {
-    if (!_collider || _target->getCollider() == nullptr)
+    if (!_collider || !_target || !_target->getCollider())
         return;
     if (_collider->isColliding(_target->getCollider()))
     {

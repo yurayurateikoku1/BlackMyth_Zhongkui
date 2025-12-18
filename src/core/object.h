@@ -6,6 +6,7 @@ class Object
 protected:
     /* data */
     Game &_game = Game::GetInstance();
+    std::vector<Object *> _object_to_add;
     std::vector<Object *> _children;
     ObjectType _type = ObjectType::NONE;
     bool _is_active = true;
@@ -20,6 +21,7 @@ public:
     virtual void render();
     virtual void clean();
 
+    void safeAddChild(Object *child) { _object_to_add.push_back(child); };
     virtual void addChild(Object *child) { _children.push_back(child); }
     virtual void removeChild(Object *child)
     {

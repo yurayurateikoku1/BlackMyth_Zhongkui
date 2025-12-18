@@ -1,6 +1,7 @@
 #pragma once
 #include "core/actor.h"
 #include "affiliate/sprite_anim.h"
+#include "world/effect.h"
 class Player : public Actor
 {
 private:
@@ -8,6 +9,7 @@ private:
     SpriteAnim *_sprite_idle = nullptr;
     SpriteAnim *_sprite_move = nullptr;
     bool _is_moving = false;
+    Effect *_effect = nullptr;
 
 public:
     virtual void init() override;
@@ -22,4 +24,5 @@ public:
 
     void checkState();
     void changeState(bool is_moving);
+    void checkIsDead();
 };

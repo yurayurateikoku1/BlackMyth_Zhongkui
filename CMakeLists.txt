@@ -14,9 +14,9 @@ endif()
 
 set(TARGET ${PROJECT_NAME}-${CMAKE_SYSTEM_NAME})
 list(PREPEND CMAKE_PREFIX_PATH 
-"D:/GameDevelopmentLibrary/SDL3_3.3.3/build"
+"D:/GameDevelopmentLibrary/SDL-3.3.3/install/cmake"
 "D:/GameDevelopmentLibrary/SDL3_image-3.2.4/cmake"
-"D:/GameDevelopmentLibrary/SDL_mixer-3.0.0/build"
+"D:/GameDevelopmentLibrary/SDL_mixer-3.0.0/install/cmake"
 "D:/GameDevelopmentLibrary/SDL3_ttf-3.2.2/cmake"
 "D:/GameDevelopmentLibrary/glm-1.0.2/build"
 )

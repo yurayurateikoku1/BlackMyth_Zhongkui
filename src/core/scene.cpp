@@ -24,12 +24,13 @@ void Scene::update(float dt)
     Object::update(dt);
     for (auto it = _children_world.begin(); it != _children_world.end();)
     {
-        auto &child = *it;
+        auto child = *it;
         if (child->getNeedRemove())
         {
             it = _children_world.erase(it);
             child->clean();
             delete child;
+            child = nullptr;
         }
         else
         {
@@ -42,12 +43,13 @@ void Scene::update(float dt)
     }
     for (auto it = _children_screen.begin(); it != _children_screen.end();)
     {
-        auto &child = *it;
+        auto child = *it;
         if (child->getNeedRemove())
         {
             it = _children_screen.erase(it);
             child->clean();
             delete child;
+            child = nullptr;
         }
         else
         {

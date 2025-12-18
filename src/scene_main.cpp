@@ -1,6 +1,7 @@
 #include "scene_main.h"
 #include "player.h"
 #include "enemy.h"
+#include "world/effect.h"
 void SceneMain::init()
 {
     _word_size = _game.getScreenSize() * 3.0f;
@@ -14,7 +15,7 @@ void SceneMain::init()
     enemy->init();
     enemy->setTarget(_player);
     enemy->setPosition(_word_size / 2.0f + glm::vec2(200.0f));
-    addChild(enemy);
+    Effect::addEffectChild(this, "assets/effect/184_3_.png", _word_size / 2.0f + glm::vec2(200.0f), 1.0f, enemy);
 }
 
 void SceneMain::update(float dt)
