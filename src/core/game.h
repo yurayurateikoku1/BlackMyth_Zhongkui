@@ -7,6 +7,7 @@
 #include <SDL3/SDL_properties.h>
 #include <glm/glm.hpp>
 #include "asset_store.h"
+#include <random>
 class Scene;
 struct Texture;
 class Game
@@ -39,6 +40,29 @@ public:
     // 画圆
     void renderFillCircle(const glm::vec2 &position, const glm::vec2 &size, float alpha);
 
+    // 随机数函数
+    float randomFloat(float min, float max)
+    {
+        std::uniform_real_distribution<float> dist(min, max);
+        return dist(_gen);
+    }
+
+    int randomInt(int min, int max)
+    {
+        std::uniform_int_distribution<int> dist(min, max);
+        return dist(_gen);
+    }
+
+    glm::vec2 randomVec2(const glm::vec2 &min, const glm::vec2 &max)
+    {
+        return glm::vec2(randomFloat(min.x, max.x), randomFloat(min.y, max.y));
+    }
+
+    glm::ivec2 randomIVec2(const glm::ivec2 &min, const glm::ivec2 &max)
+    {
+        return glm::ivec2(randomInt(min.x, max.x), randomInt(min.y, max.y));
+    }
+
 private:
     Game();
     Game(const Game &) = delete;
@@ -53,4 +77,7 @@ private:
     MIX_Mixer *_mixer = nullptr;
     SDL_Window *_window = nullptr;
     SDL_Renderer *_renderer = nullptr;
+
+    // 随机数
+    std::mt19937 _gen = std::mt19937(std::random_device{}());
 };

@@ -2,6 +2,7 @@
 #include "player.h"
 #include "enemy.h"
 #include "world/effect.h"
+#include "spwaner.h"
 void SceneMain::init()
 {
     _word_size = _game.getScreenSize() * 3.0f;
@@ -11,11 +12,16 @@ void SceneMain::init()
     _player->setPosition(_word_size / 2.0f);
     addChild(_player);
 
-    auto enemy = new Enemy();
-    enemy->init();
-    enemy->setTarget(_player);
-    enemy->setPosition(_word_size / 2.0f + glm::vec2(200.0f));
-    Effect::addEffectChild(this, "assets/effect/184_3_.png", _word_size / 2.0f + glm::vec2(200.0f), 1.0f, enemy);
+    // auto enemy = new Enemy();
+    // enemy->init();
+    // enemy->setTarget(_player);
+    // enemy->setPosition(_word_size / 2.0f + glm::vec2(200.0f));
+    // Effect::addEffectChild(this, "assets/effect/184_3_.png", _word_size / 2.0f + glm::vec2(200.0f), 1.0f, enemy);
+
+    _spwaner = new Spwaner();
+    _spwaner->init();
+    _spwaner->setTarget(_player);
+    addChild(_spwaner);
 }
 
 void SceneMain::update(float dt)

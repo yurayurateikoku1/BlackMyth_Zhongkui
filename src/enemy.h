@@ -18,6 +18,7 @@ private:
     State _current_state = State::Normal;
 
 public:
+    static Enemy *addEnemyChild(Object *parrent, const glm::vec2 &position, Player *target);
     virtual void init() override;
     virtual void update(float dt) override;
     void aimTarget(Player *target);

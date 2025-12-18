@@ -1,6 +1,7 @@
 #pragma once
 #include "core/scene.h"
 class Player;
+class Spwaner;
 class SceneMain : public Scene
 {
 private:
@@ -8,6 +9,7 @@ private:
     void renderBackground();
 
     Player *_player = nullptr;
+    Spwaner *_spwaner = nullptr;
 
 public:
     SceneMain(/* args */) = default;
