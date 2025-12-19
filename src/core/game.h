@@ -63,6 +63,9 @@ public:
         return glm::ivec2(randomInt(min.x, max.x), randomInt(min.y, max.y));
     }
 
+    glm::vec2 getMousePosition() const { return _mouse_position; }
+    SDL_MouseButtonFlags getMouseButton() const { return _mouse_buttons; }
+
 private:
     Game();
     Game(const Game &) = delete;
@@ -74,6 +77,8 @@ private:
     Uint64 _framDelay = 1000000000 / _FPS; // 帧延迟,ns
     double _dt = 0.0f;                     // 帧间隔
     glm::vec2 _screen_size{0, 0};          // 屏幕大小
+    glm::vec2 _mouse_position{0, 0};       // 鼠标位置
+    SDL_MouseButtonFlags _mouse_buttons;
     MIX_Mixer *_mixer = nullptr;
     SDL_Window *_window = nullptr;
     SDL_Renderer *_renderer = nullptr;

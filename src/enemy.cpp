@@ -16,9 +16,9 @@ void Enemy::init()
 {
     Actor::init();
     _max_speed = 100.0f;
-    _anim_normal = SpriteAnim::addSpriteAnimChild(this, "assets/sprite/ghost-Sheet.png", 3.0f);
-    _anim_hurt = SpriteAnim::addSpriteAnimChild(this, "assets/sprite/ghostHurt-Sheet.png", 3.0f);
-    _anim_die = SpriteAnim::addSpriteAnimChild(this, "assets/sprite/ghostDead-Sheet.png", 3.0f);
+    _anim_normal = SpriteAnim::addSpriteAnimChild(this, "assets/sprite/ghost-Sheet.png", 2.0f);
+    _anim_hurt = SpriteAnim::addSpriteAnimChild(this, "assets/sprite/ghostHurt-Sheet.png", 2.0f);
+    _anim_die = SpriteAnim::addSpriteAnimChild(this, "assets/sprite/ghostDead-Sheet.png", 2.0f);
     _anim_hurt->setActive(false);
     _anim_die->setActive(false);
     _anim_die->setIsLoop(false);
@@ -26,6 +26,7 @@ void Enemy::init()
 
     _collider = Collider::addColliderChild(this, _anim_current->getSize());
     _states = States::addStatesChild(this);
+    setType(ObjectType::ENEMY);
 }
 
 void Enemy::update(float dt)
@@ -36,6 +37,8 @@ void Enemy::update(float dt)
     aimTarget(_target);
     move(dt);
     attack();
+    checkState();
+    remove();
 }
 
 void Enemy::aimTarget(Player *target)
@@ -47,10 +50,21 @@ void Enemy::aimTarget(Player *target)
     _velocity = direction * _max_speed;
 }
 
+void Enemy::checkState()
+{
+    State new_state;
+    if (_states->getHealth() <= 0)
+        new_state = State::Die;
+    else if (_states->getInvincible())
+        new_state = State::Hurt;
+    else
+        new_state = State::Normal;
+    if (new_state != _current_state)
+        changeState(new_state);
+}
+
 void Enemy::changeState(State new_state)
 {
-    if (_current_state == new_state)
-        return;
     _anim_current->setActive(false);
     switch (new_state)
     {

@@ -4,12 +4,15 @@ Texture::Texture(const std::string &path)
 {
     texture = Game::GetInstance().getAssetStore()->getImage(path);
     SDL_GetTextureSize(texture, &src_rect.w, &src_rect.h);
+    src_rect.x = 0;
+    src_rect.y = 0;
 }
 
 Sprite *Sprite::addSpriteChild(ObjectScreen *parrent, const std::string &file_path, float scale, AnchorType anchor)
 {
     auto sprite = new Sprite();
     sprite->init();
+    sprite->setAnchor(anchor);
     sprite->setTexture(file_path);
     sprite->setScale(scale);
     sprite->setOffsetByAnchor(anchor);

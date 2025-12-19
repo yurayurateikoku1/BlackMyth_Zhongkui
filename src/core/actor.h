@@ -9,6 +9,8 @@ protected:
     float _max_speed = 500.0f;
 
 public:
+    virtual void takeDamage(float damage);
+
     void move(float dt);
     glm::vec2 getVelocity() const { return _velocity; }
     void setVelocity(const glm::vec2 &velocity) { _velocity = velocity; }
@@ -17,6 +19,6 @@ public:
 
     void setStates(States *states) { _states = states; }
     States *getStates() const { return _states; }
-    void takeDamage(float damage);
+
     bool IsAlive() const;
 };

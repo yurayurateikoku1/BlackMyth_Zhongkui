@@ -2,6 +2,7 @@
 #include "core/scene.h"
 class Player;
 class Spwaner;
+class UIMouse;
 class SceneMain : public Scene
 {
 private:
@@ -10,6 +11,7 @@ private:
 
     Player *_player = nullptr;
     Spwaner *_spwaner = nullptr;
+    UIMouse *_ui_mouse = nullptr;
 
 public:
     SceneMain(/* args */) = default;

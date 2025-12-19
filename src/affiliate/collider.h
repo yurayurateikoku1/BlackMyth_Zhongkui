@@ -1,10 +1,11 @@
 #pragma once
 #include "../core/object_affiliate.h"
-
+class Spell;
 class Collider : public ObjectAffiliate
 {
 protected:
     /* data */
+    friend Spell;
     enum class ColliderType
     {
         Circle, //_size的x轴为直径，默认y=x;

@@ -4,6 +4,7 @@ SpriteAnim *SpriteAnim::addSpriteAnimChild(ObjectScreen *parrent, const std::str
 {
     auto sprite_anim = new SpriteAnim();
     sprite_anim->init();
+    sprite_anim->setAnchor(anchor);
     sprite_anim->setTexture(Texture(file_path));
     sprite_anim->setScale(scale);
     sprite_anim->setOffsetByAnchor(anchor);

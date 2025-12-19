@@ -3,8 +3,11 @@
 #include "enemy.h"
 #include "world/effect.h"
 #include "spwaner.h"
+#include "screen/ui_mouse.h"
+#include "world/spell.h"
 void SceneMain::init()
 {
+    SDL_HideCursor();
     _word_size = _game.getScreenSize() * 3.0f;
     _camera_position = _word_size / 2.0f - _game.getScreenSize() / 2.0f;
     _player = new Player();
@@ -22,6 +25,8 @@ void SceneMain::init()
     _spwaner->init();
     _spwaner->setTarget(_player);
     addChild(_spwaner);
+
+    _ui_mouse = UIMouse::addUIMouseChild(this, "assets/UI/29.png", "assets/UI/30.png", 1.0f, AnchorType::CENTER);
 }
 
 void SceneMain::update(float dt)
@@ -32,6 +37,14 @@ void SceneMain::update(float dt)
 void SceneMain::handleEvents(SDL_Event &event)
 {
     Scene::handleEvents(event);
+    if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
+    {
+        if (event.button.button == SDL_BUTTON_LEFT)
+        {
+            auto position = _game.getMousePosition() + _camera_position;
+            Spell::addSpellChild(this, "assets/effect/Thunderstrike w blur.png", position, 120.0f, 3.0f, AnchorType::CENTER);
+        }
+    }
 }
 
 void SceneMain::render()

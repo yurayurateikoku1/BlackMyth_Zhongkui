@@ -45,7 +45,6 @@ void States::takeDamage(float damage)
     if (_is_invincible)
         return;
     _health -= damage;
-    SDL_Log("Actortook %f health", _health);
     if (_health < 0)
     {
         _health = 0;

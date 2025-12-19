@@ -13,6 +13,7 @@ Collider *Collider::addColliderChild(ObjectScreen *parent, glm::vec2 size, Colli
 {
     auto collider = new Collider();
     collider->init();
+    collider->setAnchor(anchor);
     collider->setParrent(parent);
     collider->setSize(size);
     collider->setType(type);

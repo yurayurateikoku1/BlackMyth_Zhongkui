@@ -33,4 +33,7 @@ public:
 
     glm::vec2 getWorldSize() const { return _word_size; }
     void setWorldSize(const glm::vec2 &word_size) { _word_size = word_size; }
+
+    std::vector<ObjectScreen *> &getChildScreen() { return _children_screen; }
+    std::vector<ObjectWorld *> &getChildWorld() { return _children_world; }
 };
