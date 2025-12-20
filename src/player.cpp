@@ -3,6 +3,7 @@
 #include "affiliate/sprite_anim.h"
 #include "affiliate/collider.h"
 #include "raw/states.h"
+
 void Player::init()
 {
     Actor::init();
@@ -15,6 +16,8 @@ void Player::init()
     _states = States::addStatesChild(this);
 
     _effect = Effect::addEffectChild(nullptr, "assets/effect/1764.png", glm::vec2(0), 2.0f);
+
+    _weapon_thunder = WeaponThunder::addWeaponThunderChild(this, 2.0f, 40.f);
 }
 
 void Player::handleEvents(SDL_Event &event)

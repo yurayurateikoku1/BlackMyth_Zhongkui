@@ -36,8 +36,11 @@ bool States::canUseMana(float mana_cost)
 
 void States::useMana(float mana_cost)
 {
+    _mana -= mana_cost;
     if (_mana < 0)
+    {
         _mana = 0;
+    }
 }
 
 void States::takeDamage(float damage)

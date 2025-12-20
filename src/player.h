@@ -2,10 +2,12 @@
 #include "core/actor.h"
 #include "affiliate/sprite_anim.h"
 #include "world/effect.h"
+#include "weapon_thunder.h"
 class Player : public Actor
 {
 private:
     /* data */
+    WeaponThunder *_weapon_thunder = nullptr;
     SpriteAnim *_sprite_idle = nullptr;
     SpriteAnim *_sprite_move = nullptr;
     bool _is_moving = false;

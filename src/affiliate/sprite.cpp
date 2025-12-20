@@ -26,7 +26,7 @@ void Sprite::render()
     if (!_texture.texture || !_parrent || _is_finished)
         return;
     auto pos = _parrent->getRenderPosition() + _offset;
-    Game::GetInstance().renderTexture(_texture, pos, _size);
+    Game::GetInstance().renderTexture(_texture, pos, _size, _percentage);
 }
 
 void Sprite::setTexture(const Texture &texture)

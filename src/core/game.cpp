@@ -2,6 +2,7 @@
 #include "../scene_main.h"
 #include "actor.h"
 #include "../affiliate/sprite.h"
+#include <algorithm>
 void Game::run()
 {
     while (_is_runing)
@@ -143,15 +144,21 @@ void Game::drawBoundary(const glm::vec2 &top_left, const glm::vec2 &right_bottom
     SDL_SetRenderDrawColorFloat(_renderer, 0, 0, 0, 1);
 }
 
-void Game::renderTexture(const Texture &texture, const glm::vec2 &position, const glm::vec2 &size)
+void Game::renderTexture(const Texture &texture, const glm::vec2 &position, const glm::vec2 &size, const glm::vec2 &mask)
 {
+    SDL_FRect src_rect = {
+        texture.src_rect.x,
+        texture.src_rect.y,
+        texture.src_rect.w * mask.x,
+        texture.src_rect.h * mask.y,
+    };
     SDL_FRect dst_rect = {
         position.x,
         position.y,
-        size.x,
-        size.y,
+        size.x * mask.x,
+        size.y * mask.y,
     };
-    SDL_RenderTextureRotated(_renderer, texture.texture, &texture.src_rect, &dst_rect, texture.angle, nullptr, texture.is_flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+    SDL_RenderTextureRotated(_renderer, texture.texture, &src_rect, &dst_rect, texture.angle, nullptr, texture.is_flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
 }
 
 void Game::renderFillCircle(const glm::vec2 &position, const glm::vec2 &size, float alpha)
@@ -165,6 +172,31 @@ void Game::renderFillCircle(const glm::vec2 &position, const glm::vec2 &size, fl
     };
     SDL_SetTextureAlphaModFloat(texture, alpha);
     SDL_RenderTexture(_renderer, texture, NULL, &dst_rect);
+}
+
+void Game::renderHBar(const glm::vec2 &position, const glm::vec2 &size, float percent, const SDL_FColor &color)
+{
+    float clamped_percent = std::clamp(percent, 0.0f, 1.0f);
+
+    // draw border
+    SDL_SetRenderDrawColorFloat(_renderer, 0, 0, 0, 1);
+    SDL_FRect boundary_rect = {
+        position.x,
+        position.y,
+        size.x,
+        size.y};
+    SDL_RenderRect(_renderer, &boundary_rect);
+
+    // fill area
+    SDL_FRect fill_rect = {
+        position.x,
+        position.y,
+        size.x * clamped_percent,
+        size.y};
+    SDL_SetRenderDrawColorFloat(_renderer, color.r, color.g, color.b, color.a);
+    SDL_RenderFillRect(_renderer, &fill_rect);
+
+    SDL_SetRenderDrawColorFloat(_renderer, 0, 0, 0, 1);
 }
 
 Game::Game()

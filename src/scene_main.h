@@ -3,6 +3,7 @@
 class Player;
 class Spwaner;
 class UIMouse;
+class HUDStates;
 class SceneMain : public Scene
 {
 private:
@@ -12,6 +13,7 @@ private:
     Player *_player = nullptr;
     Spwaner *_spwaner = nullptr;
     UIMouse *_ui_mouse = nullptr;
+    HUDStates *_hud_states = nullptr;
 
 public:
     SceneMain(/* args */) = default;

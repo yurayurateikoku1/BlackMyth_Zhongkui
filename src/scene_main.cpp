@@ -5,6 +5,7 @@
 #include "spwaner.h"
 #include "screen/ui_mouse.h"
 #include "world/spell.h"
+#include "screen/hud_states.h"
 void SceneMain::init()
 {
     SDL_HideCursor();
@@ -15,18 +16,14 @@ void SceneMain::init()
     _player->setPosition(_word_size / 2.0f);
     addChild(_player);
 
-    // auto enemy = new Enemy();
-    // enemy->init();
-    // enemy->setTarget(_player);
-    // enemy->setPosition(_word_size / 2.0f + glm::vec2(200.0f));
-    // Effect::addEffectChild(this, "assets/effect/184_3_.png", _word_size / 2.0f + glm::vec2(200.0f), 1.0f, enemy);
-
     _spwaner = new Spwaner();
     _spwaner->init();
     _spwaner->setTarget(_player);
     addChild(_spwaner);
 
     _ui_mouse = UIMouse::addUIMouseChild(this, "assets/UI/29.png", "assets/UI/30.png", 1.0f, AnchorType::CENTER);
+
+    _hud_states = HUDStates::addHUDStatesChild(this, _player, glm::vec2(30.0f, 30.0f));
 }
 
 void SceneMain::update(float dt)
@@ -37,14 +34,6 @@ void SceneMain::update(float dt)
 void SceneMain::handleEvents(SDL_Event &event)
 {
     Scene::handleEvents(event);
-    if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
-    {
-        if (event.button.button == SDL_BUTTON_LEFT)
-        {
-            auto position = _game.getMousePosition() + _camera_position;
-            Spell::addSpellChild(this, "assets/effect/Thunderstrike w blur.png", position, 120.0f, 3.0f, AnchorType::CENTER);
-        }
-    }
 }
 
 void SceneMain::render()

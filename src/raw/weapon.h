@@ -19,8 +19,11 @@ public:
     float getCoolDown() const { return _cool_down; }
     void setCoolDown(float cool_down) { _cool_down = cool_down; }
 
-    float getCoolCost() const { return _mana_cost; }
-    void setCoolCost(float mana_cost) { _mana_cost = mana_cost; }
+    float getManaCost() const { return _mana_cost; }
+    void setManaCost(float mana_cost) { _mana_cost = mana_cost; }
+
+    void setParent(Actor *parent) { _parent = parent; }
+    Actor *getParent() { return _parent; }
 
     void attack(glm::vec2 position, Spell *spell);
 

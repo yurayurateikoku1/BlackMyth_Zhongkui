@@ -25,20 +25,24 @@ public:
     void render();
     void clean();
 
+    Scene *getCurrentScene() const { return _current_screne; }
+    AssetStore *getAssetStore() const { return _asset_store; }
+    glm::vec2 getScreenSize() const { return _screen_size; }
+
+    glm::vec2 getMousePosition() const { return _mouse_position; }
+    SDL_MouseButtonFlags getMouseButton() const { return _mouse_buttons; }
+
     // 画网格
     void drawGrid(const glm::vec2 &top_left, const glm::vec2 &right_bottom, float grid_width, SDL_FColor fcolor);
-    //
-    glm::vec2 getScreenSize() const { return _screen_size; }
     // 画边框
     void drawBoundary(const glm::vec2 &top_left, const glm::vec2 &right_bottom, float boundary_width, SDL_FColor fcolor);
 
-    Scene *getCurrentScene() const { return _current_screne; }
-    AssetStore *getAssetStore() const { return _asset_store; }
-
     // 渲染纹理
-    void renderTexture(const Texture &texture, const glm::vec2 &position, const glm::vec2 &size);
-    // 画圆
+    void renderTexture(const Texture &texture, const glm::vec2 &position, const glm::vec2 &size, const glm::vec2 &mask = glm::vec2(1.0f));
+    // 渲染画圆
     void renderFillCircle(const glm::vec2 &position, const glm::vec2 &size, float alpha);
+    // 渲染bar
+    void renderHBar(const glm::vec2 &position, const glm::vec2 &size, float percent, const SDL_FColor &color);
 
     // 随机数函数
     float randomFloat(float min, float max)
@@ -62,9 +66,6 @@ public:
     {
         return glm::ivec2(randomInt(min.x, max.x), randomInt(min.y, max.y));
     }
-
-    glm::vec2 getMousePosition() const { return _mouse_position; }
-    SDL_MouseButtonFlags getMouseButton() const { return _mouse_buttons; }
 
 private:
     Game();
