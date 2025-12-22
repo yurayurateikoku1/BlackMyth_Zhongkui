@@ -83,6 +83,7 @@ void Enemy::changeState(State new_state)
     case State::Die:
         _anim_current = _anim_die;
         _anim_current->setActive(true);
+        _game.addScore(_score);
         break;
     }
     _current_state = new_state;

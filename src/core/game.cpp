@@ -59,6 +59,8 @@ void Game::init(const std::string &title, int width, int height)
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Window or Renderer create failed: %s", SDL_GetError());
         SDL_SetRenderLogicalPresentation(_renderer, width, height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
     }
+
+    _ttf_engine = TTF_CreateRendererTextEngine(_renderer);
     // 创建资源管理器
     _asset_store = new AssetStore(_renderer, _mixer);
     // 创建场景
@@ -107,9 +109,19 @@ void Game::clean()
         _asset_store->clean();
         delete _asset_store;
     }
+    if (_ttf_engine)
+    {
+        TTF_DestroyRendererTextEngine(_ttf_engine);
+    }
 
     SDL_DestroyRenderer(_renderer);
     SDL_DestroyWindow(_window);
+    MIX_StopTrack(_musicTrack, 0);
+    MIX_StopTrack(_soundTrack, 0);
+    MIX_DestroyTrack(_musicTrack);
+    MIX_DestroyTrack(_soundTrack);
+    MIX_DestroyAudio(_musicAudio);
+    MIX_DestroyAudio(_soundAudio);
     MIX_DestroyMixer(_mixer);
     MIX_Quit();
     TTF_Quit();
@@ -148,13 +160,13 @@ void Game::renderTexture(const Texture &texture, const glm::vec2 &position, cons
 {
     SDL_FRect src_rect = {
         texture.src_rect.x,
-        texture.src_rect.y,
+        texture.src_rect.y + texture.src_rect.h * (1 - mask.y),
         texture.src_rect.w * mask.x,
         texture.src_rect.h * mask.y,
     };
     SDL_FRect dst_rect = {
         position.x,
-        position.y,
+        position.y + size.y * (1 - mask.y),
         size.x * mask.x,
         size.y * mask.y,
     };
@@ -199,6 +211,163 @@ void Game::renderHBar(const glm::vec2 &position, const glm::vec2 &size, float pe
     SDL_SetRenderDrawColorFloat(_renderer, 0, 0, 0, 1);
 }
 
+TTF_Text *Game::createTTF_Text(const std::string &text, const std::string &font_path, int font_size)
+{
+    auto font = _asset_store->getFont(font_path, font_size);
+    return TTF_CreateText(_ttf_engine, font, text.c_str(), font_size);
+}
+
+void Game::setScore(int score)
+{
+    _score = score;
+    if (score > _high_score)
+    {
+        _high_score = score;
+    }
+}
+
+void Game::addScore(int score)
+{
+    setScore(_score + score);
+}
+
 Game::Game()
 {
+}
+
+void Game::playMusice(const std::string &music_path, bool loop)
+{
+
+    if (!_musicTrack)
+    {
+        _musicTrack = MIX_CreateTrack(_mixer);
+        if (!_musicTrack)
+        {
+            SDL_LogError(SDL_LOG_CATEGORY_AUDIO, "Failed to create music track: %s",
+                         SDL_GetError());
+            return;
+        }
+    }
+
+    if (_musicAudio)
+    {
+        MIX_DestroyAudio(_musicAudio);
+        _musicAudio = nullptr;
+    }
+
+    _musicAudio = MIX_LoadAudio(_mixer, music_path.c_str(), true);
+    if (!_musicAudio)
+    {
+        SDL_LogError(SDL_LOG_CATEGORY_AUDIO, "Failed to load music %s: %s",
+                     music_path.c_str(), SDL_GetError());
+        return;
+    }
+
+    if (!MIX_SetTrackAudio(_musicTrack, _musicAudio))
+    {
+        SDL_LogError(SDL_LOG_CATEGORY_AUDIO, "MIX_SetTrackAudio failed: %s",
+                     SDL_GetError());
+        return;
+    }
+    MIX_SetTrackGain(_musicTrack, 0.05f);
+    SDL_PropertiesID props = SDL_CreateProperties();
+
+    if (loop)
+    {
+        SDL_SetNumberProperty(props, MIX_PROP_PLAY_LOOPS_NUMBER, -1);
+    }
+    else
+    {
+        SDL_SetNumberProperty(props, MIX_PROP_PLAY_LOOPS_NUMBER, 0);
+    }
+    if (!MIX_PlayTrack(_musicTrack, props))
+    {
+        SDL_LogError(SDL_LOG_CATEGORY_AUDIO, "MIX_PlayTrack failed: %s",
+                     SDL_GetError());
+    }
+}
+
+void Game::playSound(const std::string &sound_path)
+{
+    if (!_mixer)
+        return;
+
+    if (!_soundTrack)
+    {
+        _soundTrack = MIX_CreateTrack(_mixer);
+        if (!_soundTrack)
+        {
+            SDL_LogError(SDL_LOG_CATEGORY_AUDIO,
+                         "Create sound track failed: %s",
+                         SDL_GetError());
+            return;
+        }
+    }
+
+    if (_soundAudio)
+    {
+        MIX_DestroyAudio(_soundAudio);
+        _soundAudio = nullptr;
+    }
+
+    _soundAudio = MIX_LoadAudio(_mixer, sound_path.c_str(), true);
+    if (!_soundAudio)
+    {
+        SDL_LogError(SDL_LOG_CATEGORY_AUDIO,
+                     "Load sound failed: %s",
+                     SDL_GetError());
+        return;
+    }
+
+    MIX_SetTrackAudio(_soundTrack, _soundAudio);
+
+    MIX_PlayTrack(_soundTrack, 0);
+}
+
+void Game::stopMusic()
+{
+    if (_musicTrack)
+    {
+        MIX_StopTrack(_musicTrack, 0);
+    }
+}
+
+void Game::stopSound()
+{
+    if (_soundTrack)
+    {
+        MIX_StopTrack(_soundTrack, 0);
+    }
+}
+
+void Game::pauseMusic()
+{
+    if (_musicTrack)
+    {
+        MIX_PauseTrack(_musicTrack);
+    }
+}
+
+void Game::pauseSound()
+{
+    if (_soundTrack)
+    {
+        MIX_PauseTrack(_soundTrack);
+    }
+}
+
+void Game::resumeMusic()
+{
+    if (_musicTrack)
+    {
+        MIX_ResumeTrack(_musicTrack);
+    }
+}
+
+void Game::resumeSound()
+{
+    if (_soundTrack)
+    {
+        MIX_ResumeTrack(_soundTrack);
+    }
 }

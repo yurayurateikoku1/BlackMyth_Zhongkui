@@ -10,6 +10,7 @@ void Spwaner::update(float dt)
     if (_timer >= _interval)
     {
         _timer = 0.0f;
+        _game.playSound("assets/sound/silly-ghost-sound-242342.mp3");
         for (int i = 0; i < _num; ++i)
         {
             auto position = _game.randomVec2(_game.getCurrentScene()->getCameraPosition(), _game.getCurrentScene()->getCameraPosition() + _game.getScreenSize());

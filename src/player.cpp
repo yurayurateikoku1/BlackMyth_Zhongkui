@@ -3,6 +3,7 @@
 #include "affiliate/sprite_anim.h"
 #include "affiliate/collider.h"
 #include "raw/states.h"
+#include "affiliate/text_label.h"
 
 void Player::init()
 {
@@ -45,6 +46,16 @@ void Player::render()
 void Player::clean()
 {
     Actor::clean();
+}
+
+void Player::takeDamage(float damage)
+{
+    if (!_states || _states->getInvincible())
+    {
+        return;
+    }
+    Actor::takeDamage(damage);
+    _game.playSound("assets/sound/hit-flesh-02-266309.mp3");
 }
 
 void Player::keyboradControl()
@@ -123,5 +134,6 @@ void Player::checkIsDead()
         _game.getCurrentScene()->safeAddChild(_effect);
         _effect->setPosition(getPosition());
         setActive(false);
+        _game.playSound("assets/sound/female-scream-02-89290.mp3");
     }
 }

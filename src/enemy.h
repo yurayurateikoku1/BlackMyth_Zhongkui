@@ -17,6 +17,8 @@ private:
     SpriteAnim *_anim_current = nullptr;
     State _current_state = State::Normal;
 
+    int _score = 10;
+
 public:
     static Enemy *addEnemyChild(Object *parrent, const glm::vec2 &position, Player *target);
     virtual void init() override;

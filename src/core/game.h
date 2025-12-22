@@ -44,6 +44,9 @@ public:
     // 渲染bar
     void renderHBar(const glm::vec2 &position, const glm::vec2 &size, float percent, const SDL_FColor &color);
 
+    // 文字函数
+    TTF_Text *createTTF_Text(const std::string &text, const std::string &font_path, int font_size = 16);
+
     // 随机数函数
     float randomFloat(float min, float max)
     {
@@ -67,6 +70,21 @@ public:
         return glm::ivec2(randomInt(min.x, max.x), randomInt(min.y, max.y));
     }
 
+    void playMusice(const std::string &music_path, bool loop = true);
+    void playSound(const std::string &sound_path);
+    void stopMusic();
+    void stopSound();
+    void pauseMusic();
+    void pauseSound();
+    void resumeMusic();
+    void resumeSound();
+
+    void setScore(int score);
+    void addScore(int score);
+    int getScore() const { return _score; }
+    void setHihgScore(int high_score) { _high_score = high_score; }
+    int getHighScore() const { return _high_score; }
+
 private:
     Game();
     Game(const Game &) = delete;
@@ -80,10 +98,19 @@ private:
     glm::vec2 _screen_size{0, 0};          // 屏幕大小
     glm::vec2 _mouse_position{0, 0};       // 鼠标位置
     SDL_MouseButtonFlags _mouse_buttons;
-    MIX_Mixer *_mixer = nullptr;
+    MIX_Mixer *_mixer = nullptr;      // 全局混音器
+    MIX_Track *_musicTrack = nullptr; // 专门给 BGM 用的 Track
+    MIX_Audio *_musicAudio = nullptr; // 当前音乐 Audio
+
+    MIX_Track *_soundTrack = nullptr;
+    MIX_Audio *_soundAudio = nullptr;
+
     SDL_Window *_window = nullptr;
     SDL_Renderer *_renderer = nullptr;
+    TTF_TextEngine *_ttf_engine = nullptr;
 
+    int _score = 0;
+    int _high_score = 0;
     // 随机数
     std::mt19937 _gen = std::mt19937(std::random_device{}());
 };

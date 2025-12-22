@@ -14,9 +14,9 @@ public:
     void setOffsetByAnchor(AnchorType anchor);
     virtual void init() override {}
     ObjectScreen *getParrent() { return _parrent; }
-    void setParrent(ObjectScreen *parrent) { this->_parrent = parrent; }
+    void setParrent(ObjectScreen *parrent) { _parrent = parrent; }
     glm::vec2 getOffset() { return _offset; }
-    void setOffset(const glm::vec2 &offset) { this->_offset = offset; }
+    void setOffset(const glm::vec2 &offset) { _offset = offset; }
     glm::vec2 getSize() { return _size; }
     void setSize(const glm::vec2 &size);
     void setScale(float scale);
