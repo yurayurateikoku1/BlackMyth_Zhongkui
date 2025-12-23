@@ -5,6 +5,7 @@ class Spwaner;
 class UIMouse;
 class HUDStates;
 class HUDText;
+class HUDButton;
 class SceneMain : public Scene
 {
 private:
@@ -19,12 +20,20 @@ private:
     HUDStates *_hud_states = nullptr;
     HUDText *_hud_text_score = nullptr;
 
+    HUDButton *_button_pause = nullptr;
+    HUDButton *_button_restart = nullptr;
+    HUDButton *_button_back = nullptr;
+
 public:
     SceneMain(/* args */) = default;
     ~SceneMain() = default;
     virtual void init() override;
-    virtual void handleEvents(SDL_Event &event) override;
+    virtual bool handleEvents(SDL_Event &event) override;
     virtual void update(float dt) override;
     virtual void render() override;
     virtual void clean() override;
+
+    void checkButtonPause();
+    void checkButtonRestart();
+    void checkButtonBack();
 };

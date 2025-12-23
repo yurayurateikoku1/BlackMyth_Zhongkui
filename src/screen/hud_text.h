@@ -12,6 +12,7 @@ public:
     TextLabel *getTextLabel() const { return _text_label; }
     Sprite *getSpriteBg() const { return _sprite_bg; }
 
+    void setBgSizeByText(float margin = 10.0f);
     void setText(const std::string &text) { _text_label->setText(text); }
     std::string getText() const { return _text_label->getText(); }
     void setSize(const glm::vec2 &size)

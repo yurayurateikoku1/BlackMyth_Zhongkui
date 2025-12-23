@@ -3,11 +3,20 @@
 #include "actor.h"
 #include "../affiliate/sprite.h"
 #include <algorithm>
+#include "../scene_title.h"
+#include "../scene_logo.h"
+#include <fstream>
 void Game::run()
 {
     while (_is_runing)
     {
         auto start = SDL_GetTicksNS();
+        if (_next_scene)
+        {
+            changeScene(_next_scene);
+            _next_scene = nullptr;
+        }
+
         handleEnvents();
         updata(_dt);
         render();
@@ -63,8 +72,8 @@ void Game::init(const std::string &title, int width, int height)
     _ttf_engine = TTF_CreateRendererTextEngine(_renderer);
     // 创建资源管理器
     _asset_store = new AssetStore(_renderer, _mixer);
-    // 创建场景
-    _current_screne = new SceneMain();
+    // 创建场景 - 从Logo场景开始
+    _current_screne = new SceneLogo();
     _current_screne->init();
 }
 void Game::handleEnvents()
@@ -231,11 +240,21 @@ void Game::addScore(int score)
     setScore(_score + score);
 }
 
+bool Game::isMouseInRect(const glm::vec2 &top_left, const glm::vec2 &right_bottom)
+{
+    if (_mouse_position.x >= top_left.x && _mouse_position.x <= right_bottom.x && _mouse_position.y >= top_left.y && _mouse_position.y <= right_bottom.y)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 Game::Game()
 {
 }
 
-void Game::playMusice(const std::string &music_path, bool loop)
+void Game::playMusic(const std::string &music_path, bool loop)
 {
 
     if (!_musicTrack)
@@ -370,4 +389,31 @@ void Game::resumeSound()
     {
         MIX_ResumeTrack(_soundTrack);
     }
+}
+
+void Game::changeScene(Scene *scene)
+{
+    if (_current_screne)
+    {
+        _current_screne->clean();
+        delete _current_screne;
+    }
+    _current_screne = scene;
+    if (_current_screne)
+    {
+        _current_screne->init();
+    }
+}
+
+std::string Game::loadTextFile(const std::string &file_path)
+{
+    std::ifstream file(file_path);
+    std::string line;
+    std::string text;
+    while (std::getline(file, line))
+    {
+        text += line + '\n';
+    }
+
+    return text;
 }

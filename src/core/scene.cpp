@@ -1,46 +1,62 @@
 #include "scene.h"
 
-void Scene::handleEvents(SDL_Event &event)
+bool Scene::handleEvents(SDL_Event &event)
 {
-    Object::handleEvents(event);
+
     for (auto &child : _children_screen)
     {
         if (child->getActive())
         {
-            child->handleEvents(event);
+            if (child->handleEvents(event))
+            {
+                return true;
+            }
         }
     }
+    if (_is_pause)
+    {
+        return false;
+    }
+    Object::handleEvents(event);
     for (auto &child : _children_world)
     {
         if (child->getActive())
         {
-            child->handleEvents(event);
+            if (child->handleEvents(event))
+            {
+                return true;
+            }
         }
     }
+    return false;
 }
 
 void Scene::update(float dt)
 {
-    Object::update(dt);
-    for (auto it = _children_world.begin(); it != _children_world.end();)
+    if (!_is_pause)
     {
-        auto child = *it;
-        if (child->getNeedRemove())
+        Object::update(dt);
+        for (auto it = _children_world.begin(); it != _children_world.end();)
         {
-            it = _children_world.erase(it);
-            child->clean();
-            delete child;
-            child = nullptr;
-        }
-        else
-        {
-            if (child->getActive())
+            auto child = *it;
+            if (child->getNeedRemove())
             {
-                child->update(dt);
+                it = _children_world.erase(it);
+                child->clean();
+                delete child;
+                child = nullptr;
             }
-            ++it;
+            else
+            {
+                if (child->getActive())
+                {
+                    child->update(dt);
+                }
+                ++it;
+            }
         }
     }
+
     for (auto it = _children_screen.begin(); it != _children_screen.end();)
     {
         auto child = *it;
@@ -132,6 +148,20 @@ void Scene::removeChild(Object *child)
         _children.erase(std::remove(_children.begin(), _children.end(), child), _children.end());
         break;
     }
+}
+
+void Scene::pause()
+{
+    _is_pause = true;
+    _game.pauseSound();
+    _game.pauseMusic();
+}
+
+void Scene::resume()
+{
+    _is_pause = false;
+    _game.resumeSound();
+    _game.resumeMusic();
 }
 
 void Scene::setCameraPosition(const glm::vec2 &camera_position)

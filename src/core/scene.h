@@ -12,12 +12,13 @@ protected:
     glm::vec2 _word_size;
     std::vector<ObjectWorld *> _children_world;
     std::vector<ObjectScreen *> _children_screen;
+    bool _is_pause = false;
 
 public:
     Scene(/* args */) = default;
     ~Scene() = default;
     virtual void init() override {}
-    virtual void handleEvents(SDL_Event &event) override;
+    virtual bool handleEvents(SDL_Event &event) override;
     virtual void update(float dt) override;
     virtual void render() override;
     virtual void clean() override;
@@ -27,6 +28,9 @@ public:
 
     glm::vec2 world2Srceen(const glm::vec2 &world_position) const { return world_position - _camera_position; }
     glm::vec2 srceen2World(const glm::vec2 &screen_position) const { return screen_position + _camera_position; }
+
+    void pause();
+    void resume();
 
     glm::vec2 getCameraPosition() const { return _camera_position; }
     void setCameraPosition(const glm::vec2 &camera_position);

@@ -21,9 +21,11 @@ void Player::init()
     _weapon_thunder = WeaponThunder::addWeaponThunderChild(this, 2.0f, 40.f);
 }
 
-void Player::handleEvents(SDL_Event &event)
+bool Player::handleEvents(SDL_Event &event)
 {
-    Actor::handleEvents(event);
+    if (Actor::handleEvents(event))
+        return true;
+    return false;
 }
 
 void Player::update(float dt)

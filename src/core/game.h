@@ -70,7 +70,7 @@ public:
         return glm::ivec2(randomInt(min.x, max.x), randomInt(min.y, max.y));
     }
 
-    void playMusice(const std::string &music_path, bool loop = true);
+    void playMusic(const std::string &music_path, bool loop = true);
     void playSound(const std::string &sound_path);
     void stopMusic();
     void stopSound();
@@ -85,12 +85,21 @@ public:
     void setHihgScore(int high_score) { _high_score = high_score; }
     int getHighScore() const { return _high_score; }
 
+    bool isMouseInRect(const glm::vec2 &top_left, const glm::vec2 &right_bottom);
+
+    void quit() { _is_runing = false; }
+    void safeChangeScene(Scene *scene) { _next_scene = scene; }
+    void changeScene(Scene *scene);
+
+    std::string loadTextFile(const std::string &file_path);
+
 private:
     Game();
     Game(const Game &) = delete;
     Game &operator=(const Game &) = delete;
     AssetStore *_asset_store = nullptr; // 资源管理类指针
     Scene *_current_screne = nullptr;   // 当前场景类指针
+    Scene *_next_scene = nullptr;
     bool _is_runing = true;
     Uint64 _FPS = 60;
     Uint64 _framDelay = 1000000000 / _FPS; // 帧延迟,ns

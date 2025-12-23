@@ -38,6 +38,7 @@ void TextLabel::setFont(const std::string &font_path, int font_size)
         _ttf_text = _game.createTTF_Text("", _font_path, _font_size);
     auto font = _game.getAssetStore()->getFont(_font_path, _font_size);
     TTF_SetTextFont(_ttf_text, font);
+    updateSize();
 }
 
 void TextLabel::setFontPath(const std::string &font_path)
@@ -45,6 +46,7 @@ void TextLabel::setFontPath(const std::string &font_path)
     _font_path = font_path;
     auto font = _game.getAssetStore()->getFont(_font_path, _font_size);
     TTF_SetTextFont(_ttf_text, font);
+    updateSize();
 }
 
 void TextLabel::setFontSize(int font_size)
@@ -52,6 +54,13 @@ void TextLabel::setFontSize(int font_size)
     font_size = font_size;
     auto font = _game.getAssetStore()->getFont(_font_path, _font_size);
     TTF_SetTextFont(_ttf_text, font);
+    updateSize();
+}
+
+void TextLabel::setText(const std::string &ttf_text)
+{
+    TTF_SetTextString(_ttf_text, ttf_text.c_str(), 0);
+    updateSize();
 }
 
 void TextLabel::updateSize()

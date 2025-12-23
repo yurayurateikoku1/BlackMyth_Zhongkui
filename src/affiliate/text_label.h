@@ -1,6 +1,6 @@
 #pragma once
 #include "../core/object_affiliate.h"
-class TextLabel : ObjectAffiliate
+class TextLabel : public ObjectAffiliate
 {
 private:
     /* data */
@@ -16,7 +16,7 @@ public:
     void setFont(const std::string &font_path, int font_size);
     void setFontPath(const std::string &font_path);
     void setFontSize(int font_size);
-    void setText(const std::string &ttf_text) { TTF_SetTextString(_ttf_text, ttf_text.c_str(), 0); }
+    void setText(const std::string &ttf_text);
 
     std::string getText() const { return _ttf_text->text; }
 

@@ -4,16 +4,20 @@ void Object::init()
 {
 }
 
-void Object::handleEvents(SDL_Event &event)
+bool Object::handleEvents(SDL_Event &event)
 {
 
     for (auto &child : _children)
     {
         if (child->getActive())
         {
-            child->handleEvents(event);
-        }
+            if (child->handleEvents(event))
+            {
+                return true;
+            }
+                }
     }
+    return false;
 }
 
 void Object::update(float dt)
