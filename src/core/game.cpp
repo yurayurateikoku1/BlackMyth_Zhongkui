@@ -66,8 +66,10 @@ void Game::init(const std::string &title, int width, int height)
     if (!_window || !_renderer)
     {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Window or Renderer create failed: %s", SDL_GetError());
-        SDL_SetRenderLogicalPresentation(_renderer, width, height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+        return;
     }
+    // 设置逻辑渲染模式，保持宽高比并自动缩放
+    SDL_SetRenderLogicalPresentation(_renderer, width, height, SDL_LOGICAL_PRESENTATION_LETTERBOX);
 
     _ttf_engine = TTF_CreateRendererTextEngine(_renderer);
     // 创建资源管理器

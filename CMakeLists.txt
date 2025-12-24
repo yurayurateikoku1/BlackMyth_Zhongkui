@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(GhsotSpace VERSION 0.1.0 LANGUAGES C CXX)
+project(BlackMyth_Zhongkui VERSION 0.1.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -40,10 +40,10 @@ file(GLOB_RECURSE SOURCES
     src/**/*.h
 )
 
-add_executable(${TARGET} ${SOURCES})
+add_executable(${TARGET} WIN32 ${SOURCES})
 
 target_link_libraries(${TARGET}
-    ${SDL3_LIBRARIES}
+    SDL3::SDL3
     SDL3_image::SDL3_image
     SDL3_mixer::SDL3_mixer
     SDL3_ttf::SDL3_ttf
