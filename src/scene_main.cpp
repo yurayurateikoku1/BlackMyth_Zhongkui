@@ -9,6 +9,9 @@
 #include "screen/hud_text.h"
 #include "screen/hud_button.h"
 #include "scene_title.h"
+#include "raw/timer.h"
+#include "raw/bg_star.h"
+#include <fstream>
 void SceneMain::init()
 {
     Scene::init();
@@ -20,6 +23,10 @@ void SceneMain::init()
     _player->init();
     _player->setPosition(_word_size / 2.0f);
     addChild(_player);
+
+    BgStar::addBgStarChild(this, 2000, 0.1f, 0.15f, 0.2f);
+
+    _end_timer = Timer::addTimerChild(this, 3.0f);
 
     _spwaner = new Spwaner();
     _spwaner->init();
@@ -44,6 +51,12 @@ void SceneMain::update(float dt)
     checkButtonPause();
     checkButtonRestart();
     checkButtonBack();
+    if (_player && !_player->getActive())
+    {
+        saveData("assets/score.dat");
+        _end_timer->start();
+    }
+    checkEndTimer();
 }
 
 bool SceneMain::handleEvents(SDL_Event &event)
@@ -62,6 +75,17 @@ void SceneMain::render()
 void SceneMain::clean()
 {
     Scene::clean();
+}
+
+void SceneMain::saveData(const std::string &file_path)
+{
+    auto score = _game.getHighScore();
+    std::ofstream file(file_path, std::ios::binary);
+    if (file.is_open())
+    {
+        file.write(reinterpret_cast<const char *>(&score), sizeof(score));
+        file.close();
+    }
 }
 
 void SceneMain::checkButtonPause()
@@ -86,7 +110,8 @@ void SceneMain::checkButtonRestart()
     {
         return;
     }
-
+    saveData("assets/score.dat");
+    _game.setScore(0);
     auto scene = new SceneMain();
     _game.safeChangeScene(scene);
 }
@@ -97,8 +122,25 @@ void SceneMain::checkButtonBack()
     {
         return;
     }
+    saveData("assets/score.dat");
+    _game.setScore(0);
     auto scene = new SceneTitle();
     _game.safeChangeScene(scene);
+}
+
+void SceneMain::checkEndTimer()
+{
+    if (!_end_timer->timeOut())
+    {
+        return;
+    }
+    pause();
+    _button_restart->setRenderPosition(_game.getScreenSize() / 2.0f - glm::vec2(200.0f, 0));
+    _button_restart->setScale(4.0f);
+    _button_back->setRenderPosition(_game.getScreenSize() / 2.0f + glm::vec2(200.0f, 0));
+    _button_back->setScale(4.0f);
+    _button_pause->setActive(false);
+    _end_timer->stop();
 }
 
 void SceneMain::renderBackground()

@@ -4,10 +4,12 @@
 #include "affiliate/collider.h"
 #include "raw/states.h"
 #include "affiliate/text_label.h"
-
+#include "raw/timer.h"
 void Player::init()
 {
     Actor::init();
+    _flash_timer = Timer::addTimerChild(this, 0.2f);
+    _flash_timer->start();
     _max_speed = 500.0f;
     _sprite_idle = SpriteAnim::addSpriteAnimChild(this, "assets/sprite/ZhongKui-idle.png", 1.0f);
     _sprite_move = SpriteAnim::addSpriteAnimChild(this, "assets/sprite/ZhongKui-move.png", 1.0f);
@@ -42,6 +44,8 @@ void Player::update(float dt)
 
 void Player::render()
 {
+    if (_states->getInvincible() && _flash_timer->getProgress() < 0.5f)
+        return;
     Actor::render();
 }
 

@@ -3,6 +3,7 @@
 #include "screen/hud_button.h"
 #include <cmath>
 #include "scene_main.h"
+#include <fstream>
 void SceneTitle::renderBackground()
 {
     _game.drawBoundary(glm::vec2(30.0f), _game.getScreenSize() - glm::vec2(30.0f), 10.0f, _boundary_color);
@@ -43,6 +44,7 @@ void SceneTitle::checkButtonCredists()
 void SceneTitle::init()
 {
     Scene::init();
+    loadData("assets/score.dat");
     SDL_ShowCursor();
     _game.playMusic("assets/bgm/Spooky music.mp3");
     auto size = glm::vec2(_game.getScreenSize().x / 2.0f, _game.getScreenSize().y / 3.0f);
@@ -98,4 +100,16 @@ void SceneTitle::render()
 void SceneTitle::clean()
 {
     Scene::clean();
+}
+
+void SceneTitle::loadData(const std::string &file_path)
+{
+    int score = 0;
+    std::ifstream file(file_path, std::ios::binary);
+    if (file.is_open())
+    {
+        file.read(reinterpret_cast<char *>(&score), sizeof(score));
+        file.close();
+    }
+    _game.setHighScore(score);
 }

@@ -26,6 +26,9 @@ public:
     virtual void addChild(Object *child) override;
     virtual void removeChild(Object *child) override;
 
+    virtual void saveData(const std::string &file_path);
+    virtual void loadData(const std::string &file_path);
+
     glm::vec2 world2Srceen(const glm::vec2 &world_position) const { return world_position - _camera_position; }
     glm::vec2 srceen2World(const glm::vec2 &screen_position) const { return screen_position + _camera_position; }
 

@@ -6,6 +6,7 @@ class UIMouse;
 class HUDStates;
 class HUDText;
 class HUDButton;
+class Timer;
 class SceneMain : public Scene
 {
 private:
@@ -24,6 +25,8 @@ private:
     HUDButton *_button_restart = nullptr;
     HUDButton *_button_back = nullptr;
 
+    Timer *_end_timer = nullptr;
+
 public:
     SceneMain(/* args */) = default;
     ~SceneMain() = default;
@@ -33,7 +36,10 @@ public:
     virtual void render() override;
     virtual void clean() override;
 
+    virtual void saveData(const std::string &file_path) override;
     void checkButtonPause();
     void checkButtonRestart();
     void checkButtonBack();
+
+    void checkEndTimer();
 };

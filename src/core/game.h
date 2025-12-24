@@ -37,6 +37,8 @@ public:
     // 画边框
     void drawBoundary(const glm::vec2 &top_left, const glm::vec2 &right_bottom, float boundary_width, SDL_FColor fcolor);
 
+    void drawPoints(const std::vector<glm::vec2> &points, const glm::vec2 &render_pos, SDL_FColor fcolor);
+
     // 渲染纹理
     void renderTexture(const Texture &texture, const glm::vec2 &position, const glm::vec2 &size, const glm::vec2 &mask = glm::vec2(1.0f));
     // 渲染画圆
@@ -82,7 +84,7 @@ public:
     void setScore(int score);
     void addScore(int score);
     int getScore() const { return _score; }
-    void setHihgScore(int high_score) { _high_score = high_score; }
+    void setHighScore(int high_score) { _high_score = high_score; }
     int getHighScore() const { return _high_score; }
 
     bool isMouseInRect(const glm::vec2 &top_left, const glm::vec2 &right_bottom);

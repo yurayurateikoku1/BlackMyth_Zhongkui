@@ -3,6 +3,7 @@
 #include "affiliate/sprite_anim.h"
 #include "world/effect.h"
 #include "weapon_thunder.h"
+class Timer;
 class Player : public Actor
 {
 private:
@@ -12,6 +13,7 @@ private:
     SpriteAnim *_sprite_move = nullptr;
     bool _is_moving = false;
     Effect *_effect = nullptr;
+    Timer *_flash_timer = nullptr;
 
 public:
     virtual void init() override;

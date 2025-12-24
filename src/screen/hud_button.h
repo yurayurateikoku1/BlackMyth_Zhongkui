@@ -30,4 +30,11 @@ public:
     void setIsHover(bool flag) { _is_hover = flag; }
     void setIsTrigger(bool flag) { _is_trigger = flag; }
     void setIsPress(bool flag) { _is_press = flag; }
+
+    void setScale(float scale)
+    {
+        _sprite_normal->setScale(scale);
+        _sprite_hover->setScale(scale);
+        _sprite_press->setScale(scale);
+    }
 };

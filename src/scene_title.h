@@ -26,4 +26,5 @@ public:
     virtual void update(float dt) override;
     virtual void render() override;
     virtual void clean() override;
+    virtual void loadData(const std::string &file_path) override;
 };
