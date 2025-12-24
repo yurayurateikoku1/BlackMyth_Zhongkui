@@ -124,4 +124,6 @@ private:
     int _high_score = 0;
     // 随机数
     std::mt19937 _gen = std::mt19937(std::random_device{}());
+
+    void updateMouse();
 };

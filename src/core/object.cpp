@@ -15,7 +15,7 @@ bool Object::handleEvents(SDL_Event &event)
             {
                 return true;
             }
-                }
+        }
     }
     return false;
 }
@@ -64,6 +64,8 @@ void Object::clean()
     for (auto &child : _children)
     {
         child->clean();
+        delete child;
+        child = nullptr;
     }
     _children.clear();
 }

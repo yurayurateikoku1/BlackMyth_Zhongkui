@@ -4,6 +4,7 @@
 #include <cmath>
 #include "scene_main.h"
 #include <fstream>
+#include "screen/ui_mouse.h"
 void SceneTitle::renderBackground()
 {
     _game.drawBoundary(glm::vec2(30.0f), _game.getScreenSize() - glm::vec2(30.0f), 10.0f, _boundary_color);
@@ -45,7 +46,7 @@ void SceneTitle::init()
 {
     Scene::init();
     loadData("assets/score.dat");
-    SDL_ShowCursor();
+    SDL_HideCursor();
     _game.playMusic("assets/bgm/Spooky music.mp3");
     auto size = glm::vec2(_game.getScreenSize().x / 2.0f, _game.getScreenSize().y / 3.0f);
     HUDText::addHUDTextChild(this, "Black Myth: ZhongKui", _game.getScreenSize() / 2.0f - glm::vec2(0, 100), size, "assets/font/VonwaonBitmap-16px.ttf", 64);
@@ -60,6 +61,8 @@ void SceneTitle::init()
     _credists_text = HUDText::addHUDTextChild(this, text, _game.getScreenSize() / 2.0f, glm::vec2(500, 500), "assets/font/VonwaonBitmap-16px.ttf", 16);
     _credists_text->setBgSizeByText(50.0f);
     _credists_text->setActive(false);
+
+    _ui_mouse = UIMouse::addUIMouseChild(this, "assets/UI/pointer_c_shaded.png", "assets/UI/pointer_c_shaded.png", 1.0f, AnchorType::TOP_LEFT);
 }
 
 bool SceneTitle::handleEvents(SDL_Event &event)
@@ -83,6 +86,7 @@ void SceneTitle::update(float dt)
     updateColor();
     if (_credists_text->getActive())
     {
+        _ui_mouse->update(dt);
         return;
     }
     Scene::update(dt);

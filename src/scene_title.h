@@ -2,6 +2,7 @@
 #include "core/scene.h"
 class HUDButton;
 class HUDText;
+class UIMouse;
 class SceneTitle : public Scene
 {
 private:
@@ -19,6 +20,7 @@ protected:
     HUDButton *_button_credists = nullptr;
     HUDButton *_button_exit = nullptr;
     HUDText *_credists_text = nullptr;
+    UIMouse *_ui_mouse = nullptr;
 
 public:
     virtual void init() override;

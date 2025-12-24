@@ -103,11 +103,15 @@ void Scene::clean()
     for (auto &child : _children_world)
     {
         child->clean();
+        delete child;
+        child = nullptr;
     }
     _children_world.clear();
     for (auto &child : _children_screen)
     {
         child->clean();
+        delete child;
+        child = nullptr;
     }
     _children_screen.clear();
 }

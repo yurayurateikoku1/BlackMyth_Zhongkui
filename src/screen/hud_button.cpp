@@ -101,6 +101,8 @@ bool HUDButton::getIsTrigger()
     if (_is_trigger)
     {
         _is_trigger = false;
+        _is_press = false;
+        _is_hover = false;
         return true;
     }
     return false;

@@ -46,6 +46,7 @@ void SceneMain::init()
 
 void SceneMain::update(float dt)
 {
+    checkSlowDown(dt);
     Scene::update(dt);
     updateScore();
     checkButtonPause();
@@ -143,12 +144,20 @@ void SceneMain::checkEndTimer()
     _end_timer->stop();
 }
 
+void SceneMain::checkSlowDown(float &dt)
+{
+    if (_game.getMouseButton() & SDL_BUTTON_RMASK)
+    {
+        dt *= 0.4;
+    }
+}
+
 void SceneMain::renderBackground()
 {
 
     auto start = -_camera_position;
     auto end = _word_size - _camera_position;
-    _game.drawGrid(start, end, 80, SDL_FColor(0.5, 0.5, 0.5, 1));
+    // _game.drawGrid(start, end, 80, SDL_FColor(0.5, 0.5, 0.5, 1));
     _game.drawBoundary(start, end, 5.0f, SDL_FColor(1, 1, 1, 1));
 }
 

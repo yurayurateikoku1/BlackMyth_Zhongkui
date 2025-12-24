@@ -94,7 +94,7 @@ void Game::handleEnvents()
 }
 void Game::updata(float dt)
 {
-    _mouse_buttons = SDL_GetMouseState(&_mouse_position.x, &_mouse_position.y);
+    updateMouse();
     _current_screne->update(dt);
 }
 void Game::render()
@@ -264,6 +264,15 @@ bool Game::isMouseInRect(const glm::vec2 &top_left, const glm::vec2 &right_botto
 
 Game::Game()
 {
+}
+
+void Game::updateMouse()
+{
+    _mouse_buttons = SDL_GetMouseState(&_mouse_position.x, &_mouse_position.y);
+    int w, h;
+    SDL_GetWindowSize(_window, &w, &h);
+    SDL_SetWindowAspectRatio(_window, _screen_size.x / _screen_size.y, _screen_size.x / _screen_size.y);
+    _mouse_position *= _screen_size / glm::vec2(w, h);
 }
 
 void Game::playMusic(const std::string &music_path, bool loop)

@@ -31,3 +31,14 @@ void Effect::update(float dt)
     ObjectWorld::update(dt);
     checkFininsh();
 }
+
+void Effect::clean()
+{
+    ObjectWorld::clean();
+    if (_next_object)
+    {
+        _next_object->clean();
+        delete _next_object;
+        _next_object = nullptr;
+    }
+}
